@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -d /app ]; then
-  echo "Directory /app exists."
-else
+if [ ! -d /app ]; then
   mkdir /app
   echo "##########################################################"
   echo "## Be carefull, /app folder seems not being persistent, ##"
@@ -10,14 +8,15 @@ else
   echo "##########################################################"
 fi
 
-chown -R jampy:jampy /app
 cd /app
 
-if [ -f /app/server.py ]; then
-    echo "File /app/server.py exists."
-else
-    echo "Installing demo into /app folder."
-    cp -R /opt/jam-py/demo/* .
+if [ ! -f /app/server.py ]; then
+  echo "##########################################################"
+  echo "## Be carefull, /app/server.py was'nt existing          ##"
+  echo "## Your /app folder may not be persistent.              ##"
+  echo "##########################################################"
+  cp -R /opt/jam-py/demo/* .
 fi
 
+chown -R jampy:jampy /app
 su -l jampy -c ./server.py
